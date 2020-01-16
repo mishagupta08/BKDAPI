@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c7cea5f5bef44adaa41e87049a7b2c95" Name="Diagram1" ZoomLevel="102">
+        <EntityTypeShape EntityType="BKDHModel.Inv_M_UserMaster" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="BKDHModel.M_ProductMaster" Width="1.5" PointX="2.375" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="BKDHModel.trnFoodOrderDetail" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="BKDHModel.trnFoodOrderMain" Width="1.5" PointX="2.375" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="BKDHModel.trnFoodCart" Width="1.5" PointX="4" PointY="0.75" IsExpanded="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

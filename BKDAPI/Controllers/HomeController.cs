@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
-using System.Web.Mvc;
+using System.Web.Http;
 
 namespace BKDAPI.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ApiController
     {
-        public ActionResult Index()
-        {
-            ViewBag.Title = "Home Page";
+        public HomeRepository repository;
 
-            return View();
+        [HttpPost, Route("api/Home/ValidateUser")]
+        public async Task<IHttpActionResult> Login(string MobileNo)
+        {
+            repository = new HomeRepository();
+            var objResponse = await repository.Login(MobileNo);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
     }
 }
