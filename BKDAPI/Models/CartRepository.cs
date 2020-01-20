@@ -14,6 +14,7 @@ namespace BKDAPI.Models
             try
             {
                 FoodCart objFoodCart = new FoodCart();
+                List<FoodItem> ProductList = new List<FoodItem>();
                 using (var entities = new BKDHEntities())
                 {
                     var user = await Task.Run(() => entities.Inv_M_UserMaster.FirstOrDefault(r => r.UserId == userId));
@@ -51,6 +52,7 @@ namespace BKDAPI.Models
                         else
                         {
                             objResponse.Status = false;
+                            objFoodCart.ProductList = ProductList;
                             objResponse.ResponseValue = new JavaScriptSerializer().Serialize(objFoodCart);
                             objResponse.ResponseMessage = "Cart empty";
                         }
