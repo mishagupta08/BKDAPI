@@ -35,4 +35,27 @@ namespace BKDAPI.Models
         public string ProductImage { get; set; }
         public int Quantity { get; set; }
     }
+    public class OrderDetail
+    {
+        public int OrderId { get; set; }
+        public int ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public string ProductImage { get; set; }
+        public int Quantity { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public Nullable<decimal> TaxPer { get; set; }
+        public Nullable<decimal> TaxAmt { get; set; }
+        public Nullable<decimal> TotalPrice { get; set; }
+        public Nullable<decimal> TotalTax { get; set; }
+        public Nullable<decimal> TotalAmount { get; set; }
+    }
+    public class Order
+    {
+        public int OrderId { get; set; }
+        public string OrderDate { get; set; }
+        public int TotalOrdQty { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTaxAmt { get; set; }
+        public List<OrderDetail> OrderDetail { get; set; }
+    }
 }

@@ -211,7 +211,7 @@ namespace BKDAPI.Models
                             var objCartItem = await Task.Run(() => entities.trnFoodCarts.FirstOrDefault(r => r.User_id == cartDetail.User_id && r.ProductCode == cartDetail.ProductCode));
                             if (objCartItem != null)
                             {
-                                 entities.trnFoodCarts.Remove(cartDetail);
+                                entities.trnFoodCarts.Remove(objCartItem);
                             }
                             await entities.SaveChangesAsync();
                             objResponse.Status = true;
