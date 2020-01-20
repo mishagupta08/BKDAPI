@@ -13,6 +13,7 @@ namespace BKDAPI.Models
             Response objResponse = new Response();
             try
             {
+                FoodCart objFoodCart = new FoodCart();
                 using (var entities = new BKDHEntities())
                 {
                     var user = await Task.Run(() => entities.Inv_M_UserMaster.FirstOrDefault(r => r.UserId == userId));
@@ -21,8 +22,7 @@ namespace BKDAPI.Models
                         var CartproductList = await Task.Run(() => entities.trnFoodCarts.Where(r => r.User_id == userId).ToList());
                        
                         if (CartproductList != null && CartproductList.Count()>0)
-                        {
-                            FoodCart objFoodCart = new FoodCart();                                                        
+                        {   
                             objFoodCart.TotalItem = CartproductList.Sum(r=>r.Quantity)??0;
                             objFoodCart.TotalAmount = CartproductList.Sum(r => r.TotalAmount) ?? 0;
                             objFoodCart.TotalTax = CartproductList.Sum(r => r.TotalTax) ?? 0;
@@ -51,6 +51,7 @@ namespace BKDAPI.Models
                         else
                         {
                             objResponse.Status = false;
+                            objResponse.ResponseValue = new JavaScriptSerializer().Serialize(objFoodCart);
                             objResponse.ResponseMessage = "Cart empty";
                         }
                     }
