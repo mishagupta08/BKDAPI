@@ -283,6 +283,9 @@
     <Compile Include="Models\Inv_M_UserMaster.cs">
       <DependentUpon>BKD.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\M_GroupMaster.cs">
+      <DependentUpon>BKD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\M_ProductMaster.cs">
       <DependentUpon>BKD.tt</DependentUpon>
     </Compile>

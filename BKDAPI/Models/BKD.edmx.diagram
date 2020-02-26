@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="BKDHModel.trnFoodOrderDetail" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="BKDHModel.trnFoodOrderMain" Width="1.5" PointX="2.375" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="BKDHModel.trnFoodCart" Width="1.5" PointX="4" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="BKDHModel.M_GroupMaster" Width="1.5" PointX="0.75" PointY="2.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

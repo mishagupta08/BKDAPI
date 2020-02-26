@@ -13,14 +13,29 @@ namespace BKDAPI.Models
             try
             {
                 using (var entities = new BKDHEntities())
-                {                    
-                    var tblUser = await Task.Run(() => entities.Inv_M_UserMaster.FirstOrDefault(e => e.UserName == user.UserName && e.Passw==user.Passw));                    
-                    
-                    if (tblUser != null)
+                {
+                    //var tblUser = await Task.Run(() => entities.Inv_M_UserMaster.FirstOrDefault(e => e.UserName == user.UserName && e.Passw == user.Passw));
+                    //var GROUP = tblUser
+                    var User = await Task.Run(() => (
+                    from us in entities.Inv_M_UserMaster
+                    join groups in entities.M_GroupMaster on us.GroupId equals groups.GroupId
+                    where us.UserName == user.UserName && us.Passw == user.Passw
+                    select new User
                     {
-                        if (tblUser.ActiveStatus == "Y")
+                        UserName = us.UserName,
+                        UId = us.UId,
+                        UserId = us.UserId,
+                        Passw = us.Passw,
+                        GroupId = us.GroupId,
+                        GroupName = groups.GroupName,
+                        ActiveStatus = us.ActiveStatus,
+
+                    }).FirstOrDefault());
+                    if (User != null)
+                    {
+                        if (User.ActiveStatus == "Y")
                         {
-                            objResponse.ResponseValue = new JavaScriptSerializer().Serialize(tblUser);
+                            objResponse.ResponseValue = new JavaScriptSerializer().Serialize(User);
                             objResponse.Status = true;
                             objResponse.ResponseMessage = "Login Successfull";
                         }
@@ -29,11 +44,11 @@ namespace BKDAPI.Models
                             objResponse.Status = false;
                             objResponse.ResponseMessage = "Inactive User.";
                         }
-                    }                  
+                    }
                     else
                     {
                         objResponse.Status = false;
-                        objResponse.ResponseMessage = "Incorrect Credentials";                        
+                        objResponse.ResponseMessage = "Incorrect Credentials";
                     }
                 }
             }
@@ -58,7 +73,7 @@ namespace BKDAPI.Models
                     {
                         objResponse.ResponseValue = new JavaScriptSerializer().Serialize(tblUser);
                         objResponse.Status = true;
-                        objResponse.ResponseMessage = "Details fetched successfully";                        
+                        objResponse.ResponseMessage = "Details fetched successfully";
                     }
                     else
                     {

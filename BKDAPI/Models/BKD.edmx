@@ -30,6 +30,29 @@
           <Property Name="LUserId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
           <Property Name="LastModified" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="IsAdmin" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="KitchenID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="M_GroupMaster">
+          <Key>
+            <PropertyRef Name="GroupName" />
+          </Key>
+          <Property Name="GroupId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="GroupName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prefix" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ActiveStatus" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="PgroupId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CommissionToParent" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="OnWebsite" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="PIStartFrm" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ChallanStartFrm" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="BillStartFrm" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="MngStkKitWs" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="InvLogin" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AllowSTN" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="SetCrLimit" Type="char" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityType Name="M_ProductMaster">
           <Key>
@@ -177,6 +200,7 @@
         </EntityType>
         <EntityContainer Name="BKDHModelStoreContainer">
           <EntitySet Name="Inv_M_UserMaster" EntityType="Self.Inv_M_UserMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_GroupMaster" EntityType="Self.M_GroupMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_ProductMaster" EntityType="Self.M_ProductMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trnFoodCart" EntityType="Self.trnFoodCart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trnFoodOrderDetail" EntityType="Self.trnFoodOrderDetail" Schema="dbo" store:Type="Tables" />
@@ -192,6 +216,7 @@
           <EntitySet Name="trnFoodOrderDetails" EntityType="BKDHModel.trnFoodOrderDetail" />
           <EntitySet Name="trnFoodOrderMains" EntityType="BKDHModel.trnFoodOrderMain" />
           <EntitySet Name="trnFoodCarts" EntityType="BKDHModel.trnFoodCart" />
+          <EntitySet Name="M_GroupMaster" EntityType="BKDHModel.M_GroupMaster" />
         </EntityContainer>
         <EntityType Name="Inv_M_UserMaster">
           <Key>
@@ -218,6 +243,8 @@
           <Property Name="LUserId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="LastModified" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="IsAdmin" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="KitchenID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="M_ProductMaster">
           <Key>
@@ -363,6 +390,27 @@
           <Property Name="TotalTax" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="M_GroupMaster">
+          <Key>
+            <PropertyRef Name="GroupName" />
+          </Key>
+          <Property Name="GroupId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Prefix" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ActiveStatus" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="PgroupId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="CommissionToParent" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="OnWebsite" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="RecTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PIStartFrm" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ChallanStartFrm" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="BillStartFrm" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="MngStkKitWs" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="InvLogin" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Remarks" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AllowSTN" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SetCrLimit" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -372,6 +420,8 @@
           <EntitySetMapping Name="Inv_M_UserMaster">
             <EntityTypeMapping TypeName="BKDHModel.Inv_M_UserMaster">
               <MappingFragment StoreEntitySet="Inv_M_UserMaster">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="KitchenID" ColumnName="KitchenID" />
                 <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="LUserId" ColumnName="LUserId" />
@@ -540,6 +590,28 @@
                 <ScalarProperty Name="User_id" ColumnName="User_id" />
                 <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_GroupMaster">
+            <EntityTypeMapping TypeName="BKDHModel.M_GroupMaster">
+              <MappingFragment StoreEntitySet="M_GroupMaster">
+                <ScalarProperty Name="SetCrLimit" ColumnName="SetCrLimit" />
+                <ScalarProperty Name="AllowSTN" ColumnName="AllowSTN" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="InvLogin" ColumnName="InvLogin" />
+                <ScalarProperty Name="MngStkKitWs" ColumnName="MngStkKitWs" />
+                <ScalarProperty Name="BillStartFrm" ColumnName="BillStartFrm" />
+                <ScalarProperty Name="ChallanStartFrm" ColumnName="ChallanStartFrm" />
+                <ScalarProperty Name="PIStartFrm" ColumnName="PIStartFrm" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+                <ScalarProperty Name="OnWebsite" ColumnName="OnWebsite" />
+                <ScalarProperty Name="CommissionToParent" ColumnName="CommissionToParent" />
+                <ScalarProperty Name="PgroupId" ColumnName="PgroupId" />
+                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

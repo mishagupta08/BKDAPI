@@ -30,5 +30,6 @@ namespace BKDAPI.Models
         public virtual DbSet<trnFoodOrderDetail> trnFoodOrderDetails { get; set; }
         public virtual DbSet<trnFoodOrderMain> trnFoodOrderMains { get; set; }
         public virtual DbSet<trnFoodCart> trnFoodCarts { get; set; }
+        public virtual DbSet<M_GroupMaster> M_GroupMaster { get; set; }
     }
 }
