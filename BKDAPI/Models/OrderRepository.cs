@@ -74,6 +74,48 @@ namespace BKDAPI.Models
         }
         public async Task<Response> GetOrderList(int userId)
         {
+            Response objResponse = new Response();           
+            List<Orders> lstOrderDetail = new List<Orders>();           
+            try
+            {
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                new SqlParameter("@UserID", userId)
+                };
+                using (DataSet ds = SqlHelper.ExecuteDataset(CONNECTION_STRING, "sp_GetOrderSummaryList", parameters))
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        lstOrderDetail = new List<Orders>();
+                        foreach (DataRow row in ds.Tables[0].Rows)
+                        {
+                            var orderDetail = new Orders();                            
+                            orderDetail.OrderNo = Convert.ToInt32(row["OrderId"]);
+                            orderDetail.OrderDate = Convert.ToDateTime(row["OrderDate"]).ToString("dd-MMM-yyyy");                            
+                            orderDetail.TotalQuantity = Convert.ToInt32(row["TotalOrdQty"]);
+                            orderDetail.OrderAmount = Convert.ToDecimal(row["NetPayable"]);
+                            orderDetail.StallName = Convert.ToString(row["StallName"]);
+                            lstOrderDetail.Add(orderDetail);                            
+                        }
+                        objResponse.Status = true;
+                    }
+                    else
+                    {
+                        objResponse.Status = false;
+                    }                    
+                }
+                objResponse.ResponseValue = await Task.Run(() => new JavaScriptSerializer().Serialize(lstOrderDetail));
+            }
+            catch (Exception ex)
+            {
+                objResponse.Status = false;
+                objResponse.ResponseMessage = ex.Message;
+            }
+            return objResponse;
+        }
+
+        public async Task<Response> GetOrderProducts(int OrderId)
+        {
             Response objResponse = new Response();
             Order order = new Order();
             OrderDetail orderDetail = new OrderDetail();
@@ -84,18 +126,12 @@ namespace BKDAPI.Models
             {
                 SqlParameter[] parameters = new SqlParameter[]
                 {
-                new SqlParameter("@UserID", userId)
+                new SqlParameter("@OrderId", OrderId)
                 };
-                using (DataSet ds = SqlHelper.ExecuteDataset(CONNECTION_STRING, "sp_GetOrderList", parameters))
+                using (DataSet ds = SqlHelper.ExecuteDataset(CONNECTION_STRING, "sp_GetOrderProductList", parameters))
                 {
                     if (ds.Tables[0].Rows.Count > 0)
                     {
-                        //Lets go ahead and create the list of employees
-                        //order.OrderId = Convert.ToInt32(ds.Tables[0].Rows[0]["OrderId"]);
-                        //order.OrderDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["OrderDate"]).ToString("dd-MMM-yyyy");
-                        //order.TotalOrdQty = Convert.ToInt32(ds.Tables[0].Rows[0]["TotalOrdQty"]);
-                        //order.TotalAmount = Convert.ToInt32(ds.Tables[0].Rows[0]["TotalAmount"]);
-                        //order.TotalTaxAmt = Convert.ToInt32(ds.Tables[0].Rows[0]["TotalTaxAmt"]);
                         lstOrderDetail = new List<OrderDetail>();
                         //Now lets populate the employee details into the list of employees
                         foreach (DataRow row in ds.Tables[0].Rows)
@@ -113,17 +149,20 @@ namespace BKDAPI.Models
                             orderDetail.TotalPrice = Convert.ToInt32(row["TotalPrice"]);
                             orderDetail.TotalTax = Convert.ToInt32(row["TotalTax"]);
                             orderDetail.TotalAmount = Convert.ToInt32(row["TotalAmount"]);
-                            foreach (DataRow rowCook in ds.Tables[1].Rows)
-                            {
-                                user = new User();
-                                user.UserId = Convert.ToInt32(rowCook["UserId"]);
-                                user.UserName = Convert.ToString(rowCook["UserName"]);
-                                user.Name = Convert.ToString(rowCook["Name"]);
-                                lstUser.Add(user);
-                            }
-                            orderDetail.Cook = lstUser;
-                            lstOrderDetail.Add(orderDetail);
-                            lstUser = new List<User>();
+                            orderDetail.CookName = Convert.ToString(row["Cook"]);
+                            orderDetail.SupervisorName = Convert.ToString(row["Supervisor"]);
+                            orderDetail.DeliveryBy = Convert.ToString(row["DeliveryBy"]);
+                            orderDetail.OrderStatus = Convert.ToString(row["Status"]);
+                            //foreach (DataRow rowCook in ds.Tables[1].Rows)
+                            //{
+                            //    user = new User();
+                            //    user.UserId = Convert.ToInt32(rowCook["UserId"]);
+                            //    user.UserName = Convert.ToString(rowCook["UserName"]);
+                            //    user.Name = Convert.ToString(rowCook["Name"]);
+                            //    lstUser.Add(user);
+                            //}
+
+                            lstOrderDetail.Add(orderDetail);                            
                         }
                         objResponse.Status = true;
                     }
@@ -143,6 +182,7 @@ namespace BKDAPI.Models
             }
             return objResponse;
         }
+
         public async Task<Response> GetOrderStatus(int userId)
         {
             Response objResponse = new Response();
@@ -207,6 +247,9 @@ namespace BKDAPI.Models
             }
             return objResponse;
         }
+
+
+
         public async Task<Response> AssignOrder(List<Assign> assign)
         {
             Response objResponse = new Response();

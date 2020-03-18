@@ -29,6 +29,13 @@ namespace BKDAPI.Controllers
             var objResponse = await repository.GetOrderList(UserId);
             return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
+        [HttpGet, Route("api/Order/ProductList/{OrderId}")]
+        public async Task<IHttpActionResult> OrderProduct(int OrderId)
+        {
+            repository = new OrderRepository();
+            var objResponse = await repository.GetOrderProducts(OrderId);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
+        }
         [HttpPost, Route("api/Order/AssignOrder")]
         public async Task<IHttpActionResult> AssignOrder()
         {

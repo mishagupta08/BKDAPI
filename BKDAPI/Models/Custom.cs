@@ -50,11 +50,24 @@ namespace BKDAPI.Models
         public Nullable<decimal> TotalPrice { get; set; }
         public Nullable<decimal> TotalTax { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
-        public List<User> Cook { get; set; }
+       // public List<User> Cook { get; set; }
         public string UserName { get; set; }
         public string Name { get; set; }
+        public string CookName { get; set; }
+        public string SupervisorName { get; set; }
+        public string DeliveryBy { get; set; }
         public string OrderStatus { get; set; }
     }
+
+    public class Orders
+    {
+        public int OrderNo { get; set; }
+        public string StallName { get; set; }
+        public int TotalQuantity { get; set; }
+        public decimal OrderAmount { get; set; }
+        public string OrderDate { get; set; }        
+    }
+
     public class Order
     {
         public int OrderId { get; set; }
