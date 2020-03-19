@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -68,6 +69,53 @@ namespace BKDAPI.Models
                 using (var entities = new BKDHEntities())
                 {
                     var tblUser = await Task.Run(() => entities.Inv_M_UserMaster.FirstOrDefault(e => e.UserId == userId));
+
+                    if (tblUser != null)
+                    {
+                        objResponse.ResponseValue = new JavaScriptSerializer().Serialize(tblUser);
+                        objResponse.Status = true;
+                        objResponse.ResponseMessage = "Details fetched successfully";
+                    }
+                    else
+                    {
+                        objResponse.Status = false;
+                        objResponse.ResponseMessage = "User Not found";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                objResponse.Status = false;
+                objResponse.ResponseMessage = ex.Message;
+            }
+            return objResponse;
+        }
+
+        public async Task<Response> GetUserList(string KitchenCode, string type)
+        {
+            Response objResponse = new Response();
+            var tblUser = new List<Inv_M_UserMaster>();
+            try
+            {
+                using (var entities = new BKDHEntities())
+                {
+
+                    if (!string.IsNullOrEmpty(KitchenCode) && !string.IsNullOrEmpty(type))
+                    {
+                        if (type.ToLower() == "cook")
+                        {
+                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 103).ToList());
+                                
+                        }
+                        else if (type.ToLower() == "supervisor")
+                        {
+                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 104).ToList());
+                        }
+                        else if (type.ToLower() == "deliveryboy")
+                        {
+                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 105).ToList());
+                        }
+                    }
 
                     if (tblUser != null)
                     {

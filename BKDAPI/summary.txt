@@ -1,0 +1,43 @@
+USE [BKDH]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GetOrderSummaryList]    Script Date: 03/18/2020 07:14:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER Procedure [dbo].[sp_GetOrderSummaryList](@UserID int)                    
+as                    
+BEGIN                    
+        
+--exec sp_GetOrderSummaryList 90  
+        
+Declare @GroupId as int=0        
+ Declare @KitchenName as varchar(255)    
+SELECT @GroupId=a.GroupId, @KitchenName = b.PartyName
+from Inv_M_UserMaster a join M_LedgerMaster b on a.BranchCode = b.PartyCode
+Where a.UserId=@UserID      
+  
+      
+--IF(@GroupId=101)    
+--BEGIN      
+                    
+Select @KitchenName as Kitchen,userStall.StallName, orderDetail.* INTO #OrderMain 
+from trnFoodOrderMain orderDetail
+inner join (select a.UserId,b.PartyName as StallName from Inv_M_UserMaster a join M_LedgerMaster b on a.BranchCode = b.PartyCode) userStall
+on orderDetail.userId = userStall.UserId
+Where OrderToKitchen=@UserID                
+Order by OrderId                   
+                        
+Select * from #OrderMain                                                                                                                                                           
+--END     
+  
+END    
+  
+  
+
+  
+  
+  
+  
+  

@@ -27,5 +27,13 @@ namespace BKDAPI.Controllers
             var objResponse = await repository.GetUserDetail(id);
             return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
+        
+        [HttpGet, Route("api/GetUserList/{KitchenCode}/{Type}")]
+        public async Task<IHttpActionResult> GetUserList(string KitchenCode,string type)
+        {
+            repository = new UserRepository();
+            var objResponse = await repository.GetUserList(KitchenCode, type);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
+        }
     }
 }
