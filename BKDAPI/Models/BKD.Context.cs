@@ -27,9 +27,10 @@ namespace BKDAPI.Models
     
         public virtual DbSet<Inv_M_UserMaster> Inv_M_UserMaster { get; set; }
         public virtual DbSet<M_ProductMaster> M_ProductMaster { get; set; }
+        public virtual DbSet<M_GroupMaster> M_GroupMaster { get; set; }
+        public virtual DbSet<M_LedgerMaster> M_LedgerMaster { get; set; }
         public virtual DbSet<trnFoodOrderDetail> trnFoodOrderDetails { get; set; }
         public virtual DbSet<trnFoodOrderMain> trnFoodOrderMains { get; set; }
         public virtual DbSet<trnFoodCart> trnFoodCarts { get; set; }
-        public virtual DbSet<M_GroupMaster> M_GroupMaster { get; set; }
     }
 }

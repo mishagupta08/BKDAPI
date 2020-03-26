@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -29,11 +30,11 @@ namespace BKDAPI.Controllers
             var objResponse = await repository.GetOrderList(UserId);
             return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
-        [HttpGet, Route("api/Order/ProductList/{OrderId}")]
-        public async Task<IHttpActionResult> OrderProduct(int OrderId)
+        [HttpGet, Route("api/Order/ProductList/{OrderId}/{UserId}")]
+        public async Task<IHttpActionResult> OrderProduct(int OrderId,int UserId)
         {
             repository = new OrderRepository();
-            var objResponse = await repository.GetOrderProducts(OrderId);
+            var objResponse = await repository.GetOrderProducts(OrderId,UserId);
             return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
         [HttpPost, Route("api/Order/AssignOrder")]
@@ -41,7 +42,7 @@ namespace BKDAPI.Controllers
         {
             repository = new OrderRepository();
             var detail = await Request.Content.ReadAsStringAsync();
-            var assignList = JsonConvert.DeserializeObject<List<Assign>>(detail);
+            var assignList = JsonConvert.DeserializeObject<OrderAssignment>(detail);
             var objResponse = await repository.AssignOrder(assignList);
             return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
@@ -52,5 +53,25 @@ namespace BKDAPI.Controllers
             var objResponse = await repository.GetOrderStatus(UserId);
             return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
+
+        [HttpGet, Route("api/Order/GetAssignedOrderList/{UserId}")]
+        public async Task<IHttpActionResult> GetAssignedOrderList(int UserId)
+        {
+            repository = new OrderRepository();
+            var objResponse = await repository.GetAssignedOrderList(UserId);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
+        }
+
+        [HttpPost, Route("api/Order/UpdateStatus")]
+        public async Task<IHttpActionResult> UpdateStatus()
+        {
+            repository = new OrderRepository();
+            var detail = await Request.Content.ReadAsStringAsync();
+            var assignList = JsonConvert.DeserializeObject<WorkStatus>(detail);
+            var objResponse = await repository.UpdateStatus(assignList);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
+        }
+
+
     }
 }

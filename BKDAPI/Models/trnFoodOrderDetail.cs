@@ -19,15 +19,20 @@ namespace BKDAPI.Models
         public System.DateTime OrderDate { get; set; }
         public int ProductCode { get; set; }
         public int Quantity { get; set; }
-        public string KitchenID { get; set; }
-        public string CookID { get; set; }
-        public string PckID { get; set; }
-        public string DelvID { get; set; }
+        public int CookID { get; set; }
+        public int PckID { get; set; }
+        public int DelvID { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> TaxPer { get; set; }
         public Nullable<decimal> TaxAmt { get; set; }
         public Nullable<decimal> TotalPrice { get; set; }
         public Nullable<decimal> TotalTax { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
+        public string CookStatus { get; set; }
+        public string SuperVisiorStatus { get; set; }
+        public string DeliveryStatus { get; set; }
+        public string CookRemark { get; set; }
+        public string SuperVisorRemark { get; set; }
+        public string DeliveryRemark { get; set; }
     }
 }

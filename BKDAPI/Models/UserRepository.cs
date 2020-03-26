@@ -30,6 +30,7 @@ namespace BKDAPI.Models
                         GroupId = us.GroupId,
                         GroupName = groups.GroupName,
                         ActiveStatus = us.ActiveStatus,
+                        BranchCode = us.BranchCode
 
                     }).FirstOrDefault());
                     if (User != null)
@@ -94,7 +95,7 @@ namespace BKDAPI.Models
         public async Task<Response> GetUserList(string KitchenCode, string type)
         {
             Response objResponse = new Response();
-            var tblUser = new List<Inv_M_UserMaster>();
+            var tblUser = new List<KitchenUser>();
             try
             {
                 using (var entities = new BKDHEntities())
@@ -104,16 +105,36 @@ namespace BKDAPI.Models
                     {
                         if (type.ToLower() == "cook")
                         {
-                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 103).ToList());
+                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 103 && r.ActiveStatus == "Y").Select(r=>new KitchenUser {                                
+                                UserId = r.UserId,
+                                UserName = r.UserName,
+                                Passw = r.Passw,
+                                ActiveStatus = r.ActiveStatus,
+                                BranchCode = r.BranchCode
+                            }).ToList());
                                 
                         }
                         else if (type.ToLower() == "supervisor")
                         {
-                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 104).ToList());
+                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 102 && r.ActiveStatus == "Y").Select(r => new KitchenUser
+                            {
+                                UserId = r.UserId,
+                                UserName = r.UserName,
+                                Passw = r.Passw,
+                                ActiveStatus = r.ActiveStatus,
+                                BranchCode = r.BranchCode
+                            }).ToList());
                         }
                         else if (type.ToLower() == "deliveryboy")
                         {
-                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 105).ToList());
+                            tblUser = await Task.Run(() => entities.Inv_M_UserMaster.Where(r => r.BranchCode == KitchenCode && r.GroupId == 104 && r.ActiveStatus == "Y").Select(r => new KitchenUser
+                            {
+                                UserId = r.UserId,
+                                UserName = r.UserName,
+                                Passw = r.Passw,
+                                ActiveStatus = r.ActiveStatus,
+                                BranchCode = r.BranchCode
+                            }).ToList());
                         }
                     }
 

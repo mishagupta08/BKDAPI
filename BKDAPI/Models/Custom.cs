@@ -50,7 +50,7 @@ namespace BKDAPI.Models
         public Nullable<decimal> TotalPrice { get; set; }
         public Nullable<decimal> TotalTax { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
-       // public List<User> Cook { get; set; }
+        public List<User> Cook { get; set; }
         public string UserName { get; set; }
         public string Name { get; set; }
         public string CookName { get; set; }
@@ -65,7 +65,8 @@ namespace BKDAPI.Models
         public string StallName { get; set; }
         public int TotalQuantity { get; set; }
         public decimal OrderAmount { get; set; }
-        public string OrderDate { get; set; }        
+        public string OrderDate { get; set; }
+        public string OrderStatus { get; set; }
     }
 
     public class Order
@@ -84,15 +85,43 @@ namespace BKDAPI.Models
         public string UserName { get; set; }
         public string Passw { get; set; }
         public string Name { get; set; }
+        public string BranchCode { get; set; }
         public string GroupName { get; set; }
         public decimal GroupId { get; set; }
         public string ActiveStatus { get; set; }
     }
-    public class Assign
+    public class CookAssign
     {
-        public int Id { get; set; }
-        public int AssignUserId { get; set; }
-        public string AssignType { get; set; }
+        public int ProductId { get; set; }
+        public string CookId { get; set; }
     }
 
+    public class OrderAssignment
+    {
+        public int OrderId { get; set; }
+        public List<CookAssign> ProductCook { get; set; }
+        public int SupervisorId { get; set; }
+        public int DeliveryBoyId { get; set; }
+    }
+
+    public class KitchenUser
+    {
+        public decimal UId { get; set; }
+        public decimal UserId { get; set; }
+        public string UserName { get; set; }
+        public string Passw { get; set; }
+        public string Name { get; set; }
+        public string BranchCode { get; set; }
+        public string FCode { get; set; }
+        public string ActiveStatus { get; set; }
+    }
+
+    public class WorkStatus
+    {
+        public string Status { get; set; }
+        public int UserId { get; set; }
+        public string UserType { get; set; }
+        public int OrderId { get; set; }
+        public List<int> ProductId { get; set; }
+    }
 }

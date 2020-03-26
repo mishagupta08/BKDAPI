@@ -82,6 +82,7 @@ namespace BKDAPI.Models
                     var user = await Task.Run(() => entities.Inv_M_UserMaster.FirstOrDefault(r => r.UserId == UserCartDetail.User_id));
                     if (user != null)
                     {
+                        var KitchenCode = user.BranchCode;
                         if (UserCartDetail.ProductList != null && UserCartDetail.ProductList.Count() > 0)
                         {
                             foreach (var product in UserCartDetail.ProductList)
@@ -94,6 +95,8 @@ namespace BKDAPI.Models
                                     var objCartItem = await Task.Run(() => entities.trnFoodCarts.FirstOrDefault(r => r.User_id == UserCartDetail.User_id && r.ProductCode == product.ProductCode));
                                     if (objCartItem == null)
                                     {
+                                        cartDetail.KitchenCode = KitchenCode;
+                                        cartDetail.StallCode = user.FCode;
                                         cartDetail.ProductCode = product.ProductCode;
                                         cartDetail.User_id = UserCartDetail.User_id;
                                         cartDetail.Quantity = product.Quantity;

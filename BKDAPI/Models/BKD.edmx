@@ -54,6 +54,55 @@
           <Property Name="AllowSTN" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="SetCrLimit" Type="char" MaxLength="1" Nullable="false" />
         </EntityType>
+        <EntityType Name="M_LedgerMaster">
+          <Key>
+            <PropertyRef Name="AId" />
+          </Key>
+          <Property Name="AId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PGroupId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="UserPartyCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PCode" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PartyCode" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentPartyCode" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PartyName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Address1" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Address2" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="StateCode" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CityCode" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CityName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tehsil" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="PinCode" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PhoneNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MobileNo" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="FaxNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PanNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TinNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CstNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="STaxNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BankAcNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BankCode" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="BankName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="RequestTo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccountVerify" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecommandBy" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ContactPerson" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="E_MailAdd" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ActiveStatus" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="OnWebSite" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="CreditLimit" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="NewFld1" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NewFld2" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NewFld3" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NewFld4" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Company" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="UserId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastModified" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="RecvdCForm" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
         <EntityType Name="M_ProductMaster">
           <Key>
             <PropertyRef Name="AId" />
@@ -152,6 +201,8 @@
           <Property Name="TotalPrice" Type="numeric" Precision="18" Scale="2" />
           <Property Name="TotalTax" Type="numeric" Precision="18" Scale="2" />
           <Property Name="TotalAmount" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="KitchenCode" Type="varchar" MaxLength="25" />
+          <Property Name="StallCode" Type="varchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="trnFoodOrderDetail">
           <Key>
@@ -162,26 +213,31 @@
           <Property Name="OrderDate" Type="datetime" Nullable="false" />
           <Property Name="ProductCode" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="KitchenID" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="CookID" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="PckID" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="DelvID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CookID" Type="int" Nullable="false" />
+          <Property Name="PckID" Type="int" Nullable="false" />
+          <Property Name="DelvID" Type="int" Nullable="false" />
           <Property Name="Price" Type="numeric" Precision="18" Scale="2" />
           <Property Name="TaxPer" Type="numeric" Precision="18" Scale="2" />
           <Property Name="TaxAmt" Type="numeric" Precision="18" Scale="2" />
           <Property Name="TotalPrice" Type="numeric" Precision="18" Scale="2" />
           <Property Name="TotalTax" Type="numeric" Precision="18" Scale="2" />
           <Property Name="TotalAmount" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="CookStatus" Type="varchar" MaxLength="150" />
+          <Property Name="SuperVisiorStatus" Type="varchar" MaxLength="150" />
+          <Property Name="DeliveryStatus" Type="varchar" MaxLength="150" />
+          <Property Name="CookRemark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="SuperVisorRemark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DeliveryRemark" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="trnFoodOrderMain">
           <Key>
             <PropertyRef Name="OrderId" />
-            <PropertyRef Name="OrderBy" />
           </Key>
           <Property Name="OrderId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrderBy" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="PartyName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrderByStall" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="OrderToKitchen" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="KitchenManager" Type="int" Nullable="false" />
+          <Property Name="StallUser" Type="int" Nullable="false" />
           <Property Name="OrderDate" Type="datetime" Nullable="false" />
           <Property Name="Paymode" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="chNo" Type="numeric" Precision="18" Scale="0" />
@@ -196,11 +252,11 @@
           <Property Name="Remarks" Type="varchar" MaxLength="100" />
           <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="RecTimeStamp" Type="datetime" Nullable="false" />
-          <Property Name="userId" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BKDHModelStoreContainer">
           <EntitySet Name="Inv_M_UserMaster" EntityType="Self.Inv_M_UserMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_GroupMaster" EntityType="Self.M_GroupMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_LedgerMaster" EntityType="Self.M_LedgerMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_ProductMaster" EntityType="Self.M_ProductMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trnFoodCart" EntityType="Self.trnFoodCart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trnFoodOrderDetail" EntityType="Self.trnFoodOrderDetail" Schema="dbo" store:Type="Tables" />
@@ -213,10 +269,11 @@
         <EntityContainer Name="BKDHEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Inv_M_UserMaster" EntityType="BKDHModel.Inv_M_UserMaster" />
           <EntitySet Name="M_ProductMaster" EntityType="BKDHModel.M_ProductMaster" />
+          <EntitySet Name="M_GroupMaster" EntityType="BKDHModel.M_GroupMaster" />
+          <EntitySet Name="M_LedgerMaster" EntityType="BKDHModel.M_LedgerMaster" />
           <EntitySet Name="trnFoodOrderDetails" EntityType="BKDHModel.trnFoodOrderDetail" />
           <EntitySet Name="trnFoodOrderMains" EntityType="BKDHModel.trnFoodOrderMain" />
           <EntitySet Name="trnFoodCarts" EntityType="BKDHModel.trnFoodCart" />
-          <EntitySet Name="M_GroupMaster" EntityType="BKDHModel.M_GroupMaster" />
         </EntityContainer>
         <EntityType Name="Inv_M_UserMaster">
           <Key>
@@ -329,67 +386,6 @@
           <Property Name="AlterID" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="HSNCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="trnFoodOrderDetail">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ProductCode" Type="Int32" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="KitchenID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CookID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="PckID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="DelvID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TaxPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TaxAmt" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TotalTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
-        <EntityType Name="trnFoodOrderMain">
-          <Key>
-            <PropertyRef Name="OrderId" />
-            <PropertyRef Name="OrderBy" />
-          </Key>
-          <Property Name="OrderId" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PartyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="OrderToKitchen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Paymode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="chNo" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="ChDate" Type="DateTime" Precision="3" />
-          <Property Name="ChAmt" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TotalOrdQty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalTaxAmt" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="RndOff" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="NetPayable" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="RecTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="userId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="trnFoodCart">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductCode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="User_id" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="Quantity" Type="Int32" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TaxPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TaxAmt" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TotalTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
         <EntityType Name="M_GroupMaster">
           <Key>
             <PropertyRef Name="GroupName" />
@@ -410,6 +406,122 @@
           <Property Name="Remarks" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AllowSTN" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="SetCrLimit" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="M_LedgerMaster">
+          <Key>
+            <PropertyRef Name="AId" />
+          </Key>
+          <Property Name="AId" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="PGroupId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="UserPartyCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PCode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="PartyCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParentPartyCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PartyName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Address1" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" Nullable="false" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="StateCode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="CityCode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="CityName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tehsil" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="PinCode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="PhoneNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNo" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="FaxNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PanNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TinNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CstNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="STaxNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankAcNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankCode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="BankName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RequestTo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AccountVerify" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RecommandBy" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ContactPerson" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="E_MailAdd" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ActiveStatus" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="OnWebSite" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CreditLimit" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Remarks" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RecTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NewFld1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NewFld2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NewFld3" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NewFld4" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Company" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="UserId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastModified" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="RecvdCForm" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="trnFoodOrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ProductCode" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="CookID" Type="Int32" Nullable="false" />
+          <Property Name="PckID" Type="Int32" Nullable="false" />
+          <Property Name="DelvID" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TaxPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TaxAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CookStatus" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="SuperVisiorStatus" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="DeliveryStatus" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CookRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="SuperVisorRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="trnFoodOrderMain">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderByStall" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrderToKitchen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="KitchenManager" Type="Int32" Nullable="false" />
+          <Property Name="StallUser" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Paymode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="chNo" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ChDate" Type="DateTime" Precision="3" />
+          <Property Name="ChAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TotalOrdQty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalTaxAmt" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RndOff" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="NetPayable" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="RecTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="trnFoodCart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductCode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="User_id" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TaxPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TaxAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="KitchenCode" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="StallCode" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -530,69 +642,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="trnFoodOrderDetails">
-            <EntityTypeMapping TypeName="BKDHModel.trnFoodOrderDetail">
-              <MappingFragment StoreEntitySet="trnFoodOrderDetail">
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
-                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
-                <ScalarProperty Name="TaxAmt" ColumnName="TaxAmt" />
-                <ScalarProperty Name="TaxPer" ColumnName="TaxPer" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="DelvID" ColumnName="DelvID" />
-                <ScalarProperty Name="PckID" ColumnName="PckID" />
-                <ScalarProperty Name="CookID" ColumnName="CookID" />
-                <ScalarProperty Name="KitchenID" ColumnName="KitchenID" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="trnFoodOrderMains">
-            <EntityTypeMapping TypeName="BKDHModel.trnFoodOrderMain">
-              <MappingFragment StoreEntitySet="trnFoodOrderMain">
-                <ScalarProperty Name="userId" ColumnName="userId" />
-                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="NetPayable" ColumnName="NetPayable" />
-                <ScalarProperty Name="RndOff" ColumnName="RndOff" />
-                <ScalarProperty Name="TotalTaxAmt" ColumnName="TotalTaxAmt" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="TotalOrdQty" ColumnName="TotalOrdQty" />
-                <ScalarProperty Name="BankName" ColumnName="BankName" />
-                <ScalarProperty Name="ChAmt" ColumnName="ChAmt" />
-                <ScalarProperty Name="ChDate" ColumnName="ChDate" />
-                <ScalarProperty Name="chNo" ColumnName="chNo" />
-                <ScalarProperty Name="Paymode" ColumnName="Paymode" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="OrderToKitchen" ColumnName="OrderToKitchen" />
-                <ScalarProperty Name="PartyName" ColumnName="PartyName" />
-                <ScalarProperty Name="OrderBy" ColumnName="OrderBy" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="trnFoodCarts">
-            <EntityTypeMapping TypeName="BKDHModel.trnFoodCart">
-              <MappingFragment StoreEntitySet="trnFoodCart">
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
-                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
-                <ScalarProperty Name="TaxAmt" ColumnName="TaxAmt" />
-                <ScalarProperty Name="TaxPer" ColumnName="TaxPer" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="User_id" ColumnName="User_id" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="M_GroupMaster">
             <EntityTypeMapping TypeName="BKDHModel.M_GroupMaster">
               <MappingFragment StoreEntitySet="M_GroupMaster">
@@ -612,6 +661,126 @@
                 <ScalarProperty Name="Prefix" ColumnName="Prefix" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_LedgerMaster">
+            <EntityTypeMapping TypeName="BKDHModel.M_LedgerMaster">
+              <MappingFragment StoreEntitySet="M_LedgerMaster">
+                <ScalarProperty Name="RecvdCForm" ColumnName="RecvdCForm" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="NewFld4" ColumnName="NewFld4" />
+                <ScalarProperty Name="NewFld3" ColumnName="NewFld3" />
+                <ScalarProperty Name="NewFld2" ColumnName="NewFld2" />
+                <ScalarProperty Name="NewFld1" ColumnName="NewFld1" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="CreditLimit" ColumnName="CreditLimit" />
+                <ScalarProperty Name="OnWebSite" ColumnName="OnWebSite" />
+                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+                <ScalarProperty Name="E_MailAdd" ColumnName="E_MailAdd" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="RecommandBy" ColumnName="RecommandBy" />
+                <ScalarProperty Name="AccountVerify" ColumnName="AccountVerify" />
+                <ScalarProperty Name="RequestTo" ColumnName="RequestTo" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="BankCode" ColumnName="BankCode" />
+                <ScalarProperty Name="BankAcNo" ColumnName="BankAcNo" />
+                <ScalarProperty Name="STaxNo" ColumnName="STaxNo" />
+                <ScalarProperty Name="CstNo" ColumnName="CstNo" />
+                <ScalarProperty Name="TinNo" ColumnName="TinNo" />
+                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
+                <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="PinCode" ColumnName="PinCode" />
+                <ScalarProperty Name="Tehsil" ColumnName="Tehsil" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="PartyName" ColumnName="PartyName" />
+                <ScalarProperty Name="ParentPartyCode" ColumnName="ParentPartyCode" />
+                <ScalarProperty Name="PartyCode" ColumnName="PartyCode" />
+                <ScalarProperty Name="PCode" ColumnName="PCode" />
+                <ScalarProperty Name="UserPartyCode" ColumnName="UserPartyCode" />
+                <ScalarProperty Name="PGroupId" ColumnName="PGroupId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="AId" ColumnName="AId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trnFoodOrderDetails">
+            <EntityTypeMapping TypeName="BKDHModel.trnFoodOrderDetail">
+              <MappingFragment StoreEntitySet="trnFoodOrderDetail">
+                <ScalarProperty Name="DeliveryRemark" ColumnName="DeliveryRemark" />
+                <ScalarProperty Name="SuperVisorRemark" ColumnName="SuperVisorRemark" />
+                <ScalarProperty Name="CookRemark" ColumnName="CookRemark" />
+                <ScalarProperty Name="DeliveryStatus" ColumnName="DeliveryStatus" />
+                <ScalarProperty Name="SuperVisiorStatus" ColumnName="SuperVisiorStatus" />
+                <ScalarProperty Name="CookStatus" ColumnName="CookStatus" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="TaxAmt" ColumnName="TaxAmt" />
+                <ScalarProperty Name="TaxPer" ColumnName="TaxPer" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DelvID" ColumnName="DelvID" />
+                <ScalarProperty Name="PckID" ColumnName="PckID" />
+                <ScalarProperty Name="CookID" ColumnName="CookID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trnFoodOrderMains">
+            <EntityTypeMapping TypeName="BKDHModel.trnFoodOrderMain">
+              <MappingFragment StoreEntitySet="trnFoodOrderMain">
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="NetPayable" ColumnName="NetPayable" />
+                <ScalarProperty Name="RndOff" ColumnName="RndOff" />
+                <ScalarProperty Name="TotalTaxAmt" ColumnName="TotalTaxAmt" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TotalOrdQty" ColumnName="TotalOrdQty" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="ChAmt" ColumnName="ChAmt" />
+                <ScalarProperty Name="ChDate" ColumnName="ChDate" />
+                <ScalarProperty Name="chNo" ColumnName="chNo" />
+                <ScalarProperty Name="Paymode" ColumnName="Paymode" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="StallUser" ColumnName="StallUser" />
+                <ScalarProperty Name="KitchenManager" ColumnName="KitchenManager" />
+                <ScalarProperty Name="OrderToKitchen" ColumnName="OrderToKitchen" />
+                <ScalarProperty Name="OrderByStall" ColumnName="OrderByStall" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trnFoodCarts">
+            <EntityTypeMapping TypeName="BKDHModel.trnFoodCart">
+              <MappingFragment StoreEntitySet="trnFoodCart">
+                <ScalarProperty Name="StallCode" ColumnName="StallCode" />
+                <ScalarProperty Name="KitchenCode" ColumnName="KitchenCode" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="TaxAmt" ColumnName="TaxAmt" />
+                <ScalarProperty Name="TaxPer" ColumnName="TaxPer" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="User_id" ColumnName="User_id" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
