@@ -1,0 +1,34 @@
+
+ALTER View V#CurrentStockDetailNotForStockist ---31Mar17
+With Encryption -- 03:38 PM 08-05-2019
+As 
+Select 
+PartyCode,PartyName,CatId,CatName,ProdId,ProductName,BatchCode,Barcode,MinStockQty,
+PurchaseRate,MfgDate,ExpDate,DP,MRP,RP,IsNull(P,0) as Qty,IsNull(K,0) as KitProdQty,IsNull(N,0) as NSProdQty,IsNull(F,0) as FreeProdQty,
+CASE WHEN IsNull(P,0)+IsNull(F,0)+IsNull(K,0)>0 THEN IsNull(P,0)+IsNull(K,0)+IsNull(F,0) else 0 END as TotalQty,--Add: >> Abs( Before IsNull(K,0) 12Mar15@06:17PM,Thur
+Cast(RP*(IsNull(P,0)+IsNull(F,0)+IsNull(K,0)) as Numeric(18,2)) as RPValue,
+Cast(PurchaseRate*(IsNull(P,0+IsNull(F,0))+IsNull(K,0)) as Numeric(18,2)) as StockValue,
+Cast(DP*(IsNull(P,0)+IsNull(F,0)+IsNull(K,0)) as Numeric(18,2)) as DPStockValue,
+Cast(Mrp*(IsNull(P,0+IsNull(F,0))+IsNull(K,0)) as Numeric(18,2)) as MRPStockValue
+FROM
+(Select b.PartyCode,b.PartyName,c.CatId,c.CatName,d.ProdId,d.ProductName,a.BatchCode,a.Barcode,
+d.PurchaseRate,d.MfgDate,d.ExpDate,d.DP,d.MRP,a.ProdType,d.RP,IsNull(SUM(Qty),0) as Qty,d.IMEINo as MinStockQty
+
+FROM Im_CurrentStock as a,
+M_LedgerMaster as b,
+M_CatMaster as c,
+M_ProductMaster as d
+
+Where a.FCode=b.PartyCode 
+AND b.GroupID in (105) 
+And c.CatId=d.CatId 
+And a.ProdId=d.ProdId 
+And a.ActiveStatus='Y' 
+And b.ActiveStatus='Y' --  Add: (19May14@06:44PM,Monday) And b.ActiveStatus='Y'
+
+Group By b.PartyCode,b.PartyName,c.CatId,c.CatName,d.ProdId,d.ProductName,a.BatchCode,a.Barcode,
+d.PurchaseRate,d.DP,d.MRP,d.MfgDate,d.ExpDate,a.ProdType,d.RP,d.IMEINo
+) as F1
+PIVOT (Sum(Qty) For ProdType In([P],[K],[N],[F])) as F2
+---WHERE PartyCode='WRD01' And ProdId In(1008,1013) --CmtDt: 13Mar15@03:32PM,Fri
+GO

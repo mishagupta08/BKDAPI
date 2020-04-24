@@ -1,0 +1,28 @@
+USE [BKDH]
+GO
+/****** Object:  StoredProcedure [dbo].[StockDetail]    Script Date: 04/17/2020 15:26:21 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure [dbo].[StockDetail] (@Stall varchar(50),@FromDate as DateTime,@ToDate as DateTime)  
+as   
+--Declare  @FromDate as DateTime='1-Dec-2018'  
+--Declare @ToDate as DateTime='15-Jan-2019'  
+  
+Select a.FCode,c.PartyName,a.ProdID,b.ProductName,b.DP,  
+ISNULL(SUM(OpStock),0) OpStock,ISNULL(SUM(InStock),0) InStock,  
+ISNULL(ABS(SUM(StockOut)),0) StockOut,ISNULL(SUM(ClsStock),0) ClsStock,  
+Cast(ISNULL(SUM(OpStock),0)*b.DP as numeric(18,2)) OpStockValue,Cast(ISNULL(SUM(InStock),0)*b.DP as numeric(18,2)) InStockValue,  
+Cast(ISNULL(ABS(SUM(StockOut)),0)*b.DP as numeric(18,2)) StockOutValue,Cast(ISNULL(SUM(ClsStock),0)*b.DP as numeric(18,2)) ClsStockValue  
+FROM  
+(Select FCode,ProdID,SUM(Qty) as OpStock,0 as InStock,0 as StockOut,0 as ClsStock FROM IM_CurrentStock WHERE StockDate<@FromDate GROUP BY FCode,ProdID  
+UNION  
+Select FCode,ProdID,0 as OpStock,SUM(Qty) as InStock,0 as StockOut,0 as ClsStock FROM IM_CurrentStock WHERE StockDate>=@FromDate AND StockDate<=@ToDate AND Qty >0 GROUP BY FCode,ProdID  
+UNION  
+Select FCode,ProdID,0 as OpStock,0 as InStock,SUM(Qty) as StockOut,0 as ClsStock FROM IM_CurrentStock WHERE StockDate>=@FromDate AND StockDate<=@ToDate AND Qty <0 GROUP BY FCode,ProdID  
+UNION  
+Select FCode,ProdID,0 as OpStock,0 as InStock,0 as StockOut,SUM(Qty) as ClsStock FROM IM_CurrentStock WHERE StockDate<=@ToDate GROUP BY FCode,ProdID)  
+a, M_ProductMaster b, M_LedgerMaster c 
+WHERE a.FCode=c.PartyCode AND a.ProdID=b.ProdID AND c.PartyCode = @Stall
+GROUP BY a.FCode,c.PartyName,a.ProdID,b.ProductName,b.DP  

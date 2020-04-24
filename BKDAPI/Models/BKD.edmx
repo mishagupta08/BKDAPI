@@ -5,6 +5,36 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="BKDHModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Im_CurrentStock">
+          <Key>
+            <PropertyRef Name="StockId" />
+          </Key>
+          <Property Name="StockId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FSessId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="SupplierCode" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="StockDate" Type="datetime" Nullable="false" />
+          <Property Name="RefNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FCode" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="GroupId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ProdId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BatchCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Barcode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Qty" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SType" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="BType" Type="char" MaxLength="5" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ActiveStatus" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="EntryBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StockFor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Version" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsDisp" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="InvoiceNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DispQty" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="BillType" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="ProdType" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
         <EntityType Name="Inv_M_UserMaster">
           <Key>
             <PropertyRef Name="UId" />
@@ -253,7 +283,66 @@
           <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="RecTimeStamp" Type="datetime" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BKDH.dbo.V#CurrentStockDetailNotForStockist' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V#CurrentStockDetailNotForStockist">
+          <Key>
+            <PropertyRef Name="PartyCode" />
+            <PropertyRef Name="PartyName" />
+            <PropertyRef Name="CatId" />
+            <PropertyRef Name="CatName" />
+            <PropertyRef Name="ProdId" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="BatchCode" />
+            <PropertyRef Name="Barcode" />
+            <PropertyRef Name="MinStockQty" />
+            <PropertyRef Name="PurchaseRate" />
+            <PropertyRef Name="MfgDate" />
+            <PropertyRef Name="ExpDate" />
+            <PropertyRef Name="DP" />
+            <PropertyRef Name="MRP" />
+            <PropertyRef Name="RP" />
+            <PropertyRef Name="KitProdQty" />
+            <PropertyRef Name="NSProdQty" />
+            <PropertyRef Name="FreeProdQty" />
+          </Key>
+          <Property Name="PartyCode" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PartyName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="CatId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CatName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ProdId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="BatchCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Barcode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MinStockQty" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PurchaseRate" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MfgDate" Type="datetime" Nullable="false" />
+          <Property Name="ExpDate" Type="datetime" Nullable="false" />
+          <Property Name="DP" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MRP" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RP" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="KitProdQty" Type="numeric" Precision="38" Scale="2" Nullable="false" />
+          <Property Name="NSProdQty" Type="numeric" Precision="38" Scale="2" Nullable="false" />
+          <Property Name="FreeProdQty" Type="numeric" Precision="38" Scale="2" Nullable="false" />
+          <Property Name="TotalQty" Type="numeric" Precision="38" Scale="2" />
+          <Property Name="RPValue" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="StockValue" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="DPStockValue" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="MRPStockValue" Type="numeric" Precision="18" Scale="2" />
+        </EntityType>
+        <Function Name="StockDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Stall" Type="varchar" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="StockDetailnew" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Stall" Type="varchar" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+        </Function>
         <EntityContainer Name="BKDHModelStoreContainer">
+          <EntitySet Name="Im_CurrentStock" EntityType="Self.Im_CurrentStock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inv_M_UserMaster" EntityType="Self.Inv_M_UserMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_GroupMaster" EntityType="Self.M_GroupMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_LedgerMaster" EntityType="Self.M_LedgerMaster" Schema="dbo" store:Type="Tables" />
@@ -261,6 +350,34 @@
           <EntitySet Name="trnFoodCart" EntityType="Self.trnFoodCart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trnFoodOrderDetail" EntityType="Self.trnFoodOrderDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trnFoodOrderMain" EntityType="Self.trnFoodOrderMain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="V#CurrentStockDetailNotForStockist" EntityType="Self.V#CurrentStockDetailNotForStockist" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V#CurrentStockDetailNotForStockist].[PartyCode] AS [PartyCode], 
+    [V#CurrentStockDetailNotForStockist].[PartyName] AS [PartyName], 
+    [V#CurrentStockDetailNotForStockist].[CatId] AS [CatId], 
+    [V#CurrentStockDetailNotForStockist].[CatName] AS [CatName], 
+    [V#CurrentStockDetailNotForStockist].[ProdId] AS [ProdId], 
+    [V#CurrentStockDetailNotForStockist].[ProductName] AS [ProductName], 
+    [V#CurrentStockDetailNotForStockist].[BatchCode] AS [BatchCode], 
+    [V#CurrentStockDetailNotForStockist].[Barcode] AS [Barcode], 
+    [V#CurrentStockDetailNotForStockist].[MinStockQty] AS [MinStockQty], 
+    [V#CurrentStockDetailNotForStockist].[PurchaseRate] AS [PurchaseRate], 
+    [V#CurrentStockDetailNotForStockist].[MfgDate] AS [MfgDate], 
+    [V#CurrentStockDetailNotForStockist].[ExpDate] AS [ExpDate], 
+    [V#CurrentStockDetailNotForStockist].[DP] AS [DP], 
+    [V#CurrentStockDetailNotForStockist].[MRP] AS [MRP], 
+    [V#CurrentStockDetailNotForStockist].[RP] AS [RP], 
+    [V#CurrentStockDetailNotForStockist].[Qty] AS [Qty], 
+    [V#CurrentStockDetailNotForStockist].[KitProdQty] AS [KitProdQty], 
+    [V#CurrentStockDetailNotForStockist].[NSProdQty] AS [NSProdQty], 
+    [V#CurrentStockDetailNotForStockist].[FreeProdQty] AS [FreeProdQty], 
+    [V#CurrentStockDetailNotForStockist].[TotalQty] AS [TotalQty], 
+    [V#CurrentStockDetailNotForStockist].[RPValue] AS [RPValue], 
+    [V#CurrentStockDetailNotForStockist].[StockValue] AS [StockValue], 
+    [V#CurrentStockDetailNotForStockist].[DPStockValue] AS [DPStockValue], 
+    [V#CurrentStockDetailNotForStockist].[MRPStockValue] AS [MRPStockValue]
+    FROM [dbo].[V#CurrentStockDetailNotForStockist] AS [V#CurrentStockDetailNotForStockist]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -274,6 +391,18 @@
           <EntitySet Name="trnFoodOrderDetails" EntityType="BKDHModel.trnFoodOrderDetail" />
           <EntitySet Name="trnFoodOrderMains" EntityType="BKDHModel.trnFoodOrderMain" />
           <EntitySet Name="trnFoodCarts" EntityType="BKDHModel.trnFoodCart" />
+          <EntitySet Name="Im_CurrentStock" EntityType="BKDHModel.Im_CurrentStock" />
+          <EntitySet Name="V_CurrentStockDetailNotForStockist" EntityType="BKDHModel.V_CurrentStockDetailNotForStockist" />
+          <FunctionImport Name="StockDetail" ReturnType="Collection(BKDHModel.StockDetail_Result)">
+            <Parameter Name="Stall" Mode="In" Type="String" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="StockDetailnew" ReturnType="Collection(BKDHModel.StockDetailnew_Result)">
+            <Parameter Name="Stall" Mode="In" Type="String" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Inv_M_UserMaster">
           <Key>
@@ -523,6 +652,102 @@
           <Property Name="KitchenCode" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="StallCode" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Im_CurrentStock">
+          <Key>
+            <PropertyRef Name="StockId" />
+          </Key>
+          <Property Name="StockId" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FSessId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="SupplierCode" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="StockDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RefNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FCode" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="GroupId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ProdId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BatchCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Barcode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Qty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BType" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="Remarks" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ActiveStatus" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EntryBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StockFor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RecTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IsDisp" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="InvoiceNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DispQty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="BillType" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="ProdType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_CurrentStockDetailNotForStockist">
+          <Key>
+            <PropertyRef Name="PartyCode" />
+            <PropertyRef Name="PartyName" />
+            <PropertyRef Name="CatId" />
+            <PropertyRef Name="CatName" />
+            <PropertyRef Name="ProdId" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="BatchCode" />
+            <PropertyRef Name="Barcode" />
+            <PropertyRef Name="MinStockQty" />
+            <PropertyRef Name="PurchaseRate" />
+            <PropertyRef Name="MfgDate" />
+            <PropertyRef Name="ExpDate" />
+            <PropertyRef Name="DP" />
+            <PropertyRef Name="MRP" />
+            <PropertyRef Name="RP" />
+            <PropertyRef Name="KitProdQty" />
+            <PropertyRef Name="NSProdQty" />
+            <PropertyRef Name="FreeProdQty" />
+          </Key>
+          <Property Name="PartyCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PartyName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CatId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="CatName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProdId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BatchCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Barcode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MinStockQty" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PurchaseRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MfgDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ExpDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DP" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MRP" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RP" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="KitProdQty" Type="Decimal" Nullable="false" Precision="38" Scale="2" />
+          <Property Name="NSProdQty" Type="Decimal" Nullable="false" Precision="38" Scale="2" />
+          <Property Name="FreeProdQty" Type="Decimal" Nullable="false" Precision="38" Scale="2" />
+          <Property Name="TotalQty" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="RPValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StockValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DPStockValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MRPStockValue" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <ComplexType Name="StockDetail_Result">
+          <Property Type="String" Name="ProductCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="StockDate" Nullable="false" MaxLength="20" />
+          <Property Type="Decimal" Name="OpStock" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="InStock" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="StockOut" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="StockWaste" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="ClsStock" Nullable="false" Precision="18" Scale="0" />
+        </ComplexType>
+        <ComplexType Name="StockDetailnew_Result">
+          <Property Type="String" Name="ProductCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="StockDate" Nullable="true" MaxLength="8000" />
+          <Property Type="Decimal" Name="OpStock" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="InStock" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="StockOut" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="StockWaste" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="ClsStock" Nullable="false" Precision="18" Scale="0" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -784,6 +1009,95 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Im_CurrentStock">
+            <EntityTypeMapping TypeName="BKDHModel.Im_CurrentStock">
+              <MappingFragment StoreEntitySet="Im_CurrentStock">
+                <ScalarProperty Name="ProdType" ColumnName="ProdType" />
+                <ScalarProperty Name="BillType" ColumnName="BillType" />
+                <ScalarProperty Name="DispQty" ColumnName="DispQty" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="IsDisp" ColumnName="IsDisp" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+                <ScalarProperty Name="StockFor" ColumnName="StockFor" />
+                <ScalarProperty Name="EntryBy" ColumnName="EntryBy" />
+                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="BType" ColumnName="BType" />
+                <ScalarProperty Name="SType" ColumnName="SType" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="FCode" ColumnName="FCode" />
+                <ScalarProperty Name="RefNo" ColumnName="RefNo" />
+                <ScalarProperty Name="StockDate" ColumnName="StockDate" />
+                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
+                <ScalarProperty Name="FSessId" ColumnName="FSessId" />
+                <ScalarProperty Name="StockId" ColumnName="StockId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_CurrentStockDetailNotForStockist">
+            <EntityTypeMapping TypeName="BKDHModel.V_CurrentStockDetailNotForStockist">
+              <MappingFragment StoreEntitySet="V#CurrentStockDetailNotForStockist">
+                <ScalarProperty Name="MRPStockValue" ColumnName="MRPStockValue" />
+                <ScalarProperty Name="DPStockValue" ColumnName="DPStockValue" />
+                <ScalarProperty Name="StockValue" ColumnName="StockValue" />
+                <ScalarProperty Name="RPValue" ColumnName="RPValue" />
+                <ScalarProperty Name="TotalQty" ColumnName="TotalQty" />
+                <ScalarProperty Name="FreeProdQty" ColumnName="FreeProdQty" />
+                <ScalarProperty Name="NSProdQty" ColumnName="NSProdQty" />
+                <ScalarProperty Name="KitProdQty" ColumnName="KitProdQty" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="RP" ColumnName="RP" />
+                <ScalarProperty Name="MRP" ColumnName="MRP" />
+                <ScalarProperty Name="DP" ColumnName="DP" />
+                <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+                <ScalarProperty Name="MfgDate" ColumnName="MfgDate" />
+                <ScalarProperty Name="PurchaseRate" ColumnName="PurchaseRate" />
+                <ScalarProperty Name="MinStockQty" ColumnName="MinStockQty" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="CatName" ColumnName="CatName" />
+                <ScalarProperty Name="CatId" ColumnName="CatId" />
+                <ScalarProperty Name="PartyName" ColumnName="PartyName" />
+                <ScalarProperty Name="PartyCode" ColumnName="PartyCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="StockDetail" FunctionName="BKDHModel.Store.StockDetail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BKDHModel.StockDetail_Result">
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="StockDate" ColumnName="StockDate" />
+                <ScalarProperty Name="OpStock" ColumnName="OpStock" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="StockOut" ColumnName="StockOut" />
+                <ScalarProperty Name="StockWaste" ColumnName="StockWaste" />
+                <ScalarProperty Name="ClsStock" ColumnName="ClsStock" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="StockDetailnew" FunctionName="BKDHModel.Store.StockDetailnew">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BKDHModel.StockDetailnew_Result">
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="StockDate" ColumnName="StockDate" />
+                <ScalarProperty Name="OpStock" ColumnName="OpStock" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="StockOut" ColumnName="StockOut" />
+                <ScalarProperty Name="StockWaste" ColumnName="StockWaste" />
+                <ScalarProperty Name="ClsStock" ColumnName="ClsStock" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

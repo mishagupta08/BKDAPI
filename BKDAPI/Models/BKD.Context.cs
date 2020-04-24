@@ -12,6 +12,8 @@ namespace BKDAPI.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class BKDHEntities : DbContext
     {
@@ -32,5 +34,41 @@ namespace BKDAPI.Models
         public virtual DbSet<trnFoodOrderDetail> trnFoodOrderDetails { get; set; }
         public virtual DbSet<trnFoodOrderMain> trnFoodOrderMains { get; set; }
         public virtual DbSet<trnFoodCart> trnFoodCarts { get; set; }
+        public virtual DbSet<Im_CurrentStock> Im_CurrentStock { get; set; }
+        public virtual DbSet<V_CurrentStockDetailNotForStockist> V_CurrentStockDetailNotForStockist { get; set; }
+    
+        public virtual ObjectResult<StockDetail_Result> StockDetail(string stall, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var stallParameter = stall != null ?
+                new ObjectParameter("Stall", stall) :
+                new ObjectParameter("Stall", typeof(string));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<StockDetail_Result>("StockDetail", stallParameter, fromDateParameter, toDateParameter);
+        }
+    
+        public virtual ObjectResult<StockDetailnew_Result> StockDetailnew(string stall, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var stallParameter = stall != null ?
+                new ObjectParameter("Stall", stall) :
+                new ObjectParameter("Stall", typeof(string));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<StockDetailnew_Result>("StockDetailnew", stallParameter, fromDateParameter, toDateParameter);
+        }
     }
 }

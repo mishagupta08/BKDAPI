@@ -72,6 +72,32 @@ namespace BKDAPI.Controllers
             return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
         }
 
+        [HttpPost, Route("api/Order/LessStock")]
+        public async Task<IHttpActionResult> LessStock()
+        {
+            repository = new OrderRepository();
+            var detail = await Request.Content.ReadAsStringAsync();
+            var assignList = JsonConvert.DeserializeObject<UsedStallProducts>(detail);
+            var objResponse = await repository.LessStock(assignList);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
+        }
+
+        [HttpGet, Route("api/Order/GetStock/{PartyCode}")]
+        public async Task<IHttpActionResult> GetStock(string PartyCode)
+        {
+            repository = new OrderRepository();                        
+            var objResponse = await repository.GetStockReport(PartyCode);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
+        }
+
+        [HttpGet, Route("api/Order/GetStockSummary/{PartyCode}/{From}/{To}")]
+        public async Task<IHttpActionResult> GetStockSummary(string PartyCode,string From,string To)
+        {
+            repository = new OrderRepository();
+            var objResponse = await repository.GetDateWiseStockReport(PartyCode,From,To);
+            return Content(HttpStatusCode.OK, objResponse, Configuration.Formatters.JsonFormatter);
+        }
+
 
     }
 }

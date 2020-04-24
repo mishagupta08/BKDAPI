@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -360,6 +361,8 @@ namespace BKDAPI.Models
         public async Task<Response> UpdateStatus(WorkStatus objworkstatus)
         {
             Response objResponse = new Response();
+            objResponse.Status = true;
+            objResponse.ResponseMessage = "Status Updated Successfully";
             try
             {
                 using (var entity = new BKDHEntities())
@@ -374,33 +377,81 @@ namespace BKDAPI.Models
                             var Product = OrderProducts.FirstOrDefault(r => r.ProductCode == id && r.CookID == objworkstatus.UserId);
                             Product.CookStatus = objworkstatus.Status;
                         }                        
-                        OrderMain.Remarks = objworkstatus.Status;
                         entity.SaveChanges();
                     }
                     else if (objworkstatus.UserType.ToLower() == "supervisor")
                     {
+                        var flag = true;
                         foreach (var id in objworkstatus.ProductId)
                         {
                             var Product = OrderProducts.FirstOrDefault(r => r.ProductCode == id && r.PckID == objworkstatus.UserId);
-                            Product.SuperVisiorStatus = objworkstatus.Status;
+                            if (Product.CookStatus.ToLower() == "cooked")
+                            {
+                                Product.SuperVisiorStatus = objworkstatus.Status;
+                            }
+                            else
+                            {
+                                flag = false;
+                                break;
+                            }
                         }
-                        OrderMain.Remarks = objworkstatus.Status;
-                        entity.SaveChanges();
+                        if (flag)
+                        {
+                            OrderMain.Remarks = objworkstatus.Status;
+                            entity.SaveChanges();
+                        }
+                        else
+                        {
+                            objResponse.Status = false;
+                            objResponse.ResponseMessage = "All products in order are not cooked yet.";
+                        }
                     }
                     else if (objworkstatus.UserType.ToLower() == "deliveryboy")
                     {
+                        var flag = true;
                         foreach (var id in objworkstatus.ProductId)
                         {
-                            var Product = OrderProducts.FirstOrDefault(r => r.ProductCode == id && r.DelvID == objworkstatus.UserId);
-                            Product.DeliveryStatus = objworkstatus.Status;
+                            var Product = OrderProducts.FirstOrDefault(r => r.ProductCode == id && r.DelvID == objworkstatus.UserId);                           
+                            if (Product.SuperVisiorStatus.ToLower() == "packed")
+                            {
+                                Product.DeliveryStatus = objworkstatus.Status;
+                            }
+                            else
+                            {
+                                flag = false;
+                                break;
+                            }
                         }
-                        OrderMain.Remarks = objworkstatus.Status;
-                        entity.SaveChanges();
+                        if (flag)
+                        {
+                            OrderMain.Remarks = objworkstatus.Status;
+                            int i =entity.SaveChanges();
+                            if (i > 0)
+                            {
+                                AddStock(objworkstatus.OrderId);
+                            }
+                        }
+                        else
+                        {
+                            objResponse.Status = false;
+                            objResponse.ResponseMessage = "All products in order are not packed yet.";
+                        }
                     }
 
-                    objResponse.Status = true;
-                    objResponse.ResponseMessage = "Status Updated Successfully";
-                }                   
+                    if (objworkstatus.UserType.ToLower() == "cook")
+                    {
+                        var CookedProducts = await Task.Run(() => entity.trnFoodOrderDetails.Where(r => r.OrderId == objworkstatus.OrderId && r.CookStatus.ToLower() == "cooked").ToList());
+                        if (OrderProducts.Count == CookedProducts.Count)
+                        {
+                            OrderMain.Remarks = "Cooked";                           
+                        }
+                        else
+                        {
+                            OrderMain.Remarks = "Pending";
+                        }
+                        entity.SaveChanges();
+                    }
+                 }                   
             }
             catch (Exception ex)
             {
@@ -410,6 +461,244 @@ namespace BKDAPI.Models
             return objResponse;
         }
 
+        public string AddStock(int Order)
+        {
+            string response = string.Empty;
+            response = "Failed";
+            try
+            {
+                using (var entitites = new BKDHEntities())
+                {
+
+                    var OrderSummary = (from r in entitites.trnFoodOrderMains where r.OrderId == Order && r.Remarks == "Delivered" select r).FirstOrDefault();
+                    var orderProducts = (from r in entitites.trnFoodOrderDetails where r.OrderId == Order select r).ToList();
+
+                    foreach (var product in orderProducts)
+                    {
+                        Im_CurrentStock objCurrentStock = new Im_CurrentStock();
+
+                        objCurrentStock.FSessId = 0;
+                        objCurrentStock.SupplierCode = OrderSummary.OrderToKitchen;
+                        objCurrentStock.StockDate = DateTime.Now.Date;
+                        objCurrentStock.RefNo = "Order:" + Order;
+                        objCurrentStock.FCode = OrderSummary.OrderByStall;
+                        objCurrentStock.GroupId = 0;
+                        objCurrentStock.ProdId = Convert.ToString(product.ProductCode);
+                        objCurrentStock.BatchCode = "";
+                        objCurrentStock.Barcode = "";
+                        objCurrentStock.SType = "I";
+                        objCurrentStock.Qty = product.Quantity;
+                        objCurrentStock.BType = "";
+                        objCurrentStock.Remarks = "Stock Added";
+                        objCurrentStock.BillType = "";
+
+                        objCurrentStock.ActiveStatus = "Y";
+                        objCurrentStock.EntryBy = "";
+                        objCurrentStock.StockFor = "";
+                        objCurrentStock.RecTimeStamp = DateTime.Now;
+                        objCurrentStock.UserId = 0;
+                        objCurrentStock.Version = "";
+                        objCurrentStock.IsDisp = "N";
+                        objCurrentStock.InvoiceNo = "";
+                        objCurrentStock.ProdType = "P";
+                        objCurrentStock.DispQty = 0;
+
+                        entitites.Im_CurrentStock.Add(objCurrentStock);
+                    }
+                    int i = entitites.SaveChanges();
+                    if (i > 0)
+                    {
+                        response = "Stock Added"; 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response = "Failed";
+            }
+            return response;
+        }
+
+        public async Task<Response> LessStock(UsedStallProducts ConsumedProducts)
+        {
+            Response objResponse = new Response();
+            objResponse.Status = true;
+            objResponse.ResponseMessage = "Stock Updated Successfully";
+            try
+            {
+                using (var entitites = new BKDHEntities())
+                {
+                    var currentStock = getCurrentStock(ConsumedProducts.Stall);
+                    var isStockAvailable = true;
+                    foreach (var product in ConsumedProducts.ProductList)
+                    {
+                        if (currentStock.Where(r => r.ProductCode == Convert.ToString(product.ProductCode)).FirstOrDefault().Quantity >= product.Quantity)
+                        {
+                            Im_CurrentStock objCurrentStock = new Im_CurrentStock();
+                            objCurrentStock.FSessId = 0;
+                            objCurrentStock.SupplierCode = "";
+                            objCurrentStock.StockDate = DateTime.Now.Date;
+                            objCurrentStock.RefNo = "";
+                            objCurrentStock.FCode = ConsumedProducts.Stall;
+                            objCurrentStock.GroupId = 0;
+                            objCurrentStock.ProdId = Convert.ToString(product.ProductCode);
+                            objCurrentStock.BatchCode = "";
+                            objCurrentStock.Barcode = "";
+                            objCurrentStock.SType = product.type;
+                            objCurrentStock.Qty = -(product.Quantity);
+                            objCurrentStock.BType = "";
+                            objCurrentStock.Remarks = product.type == "W" ? "Stock Wasted" : "Stock Less";
+                            objCurrentStock.BillType = "";
+
+                            objCurrentStock.ActiveStatus = "Y";
+                            objCurrentStock.EntryBy = "";
+                            objCurrentStock.StockFor = "";
+                            objCurrentStock.RecTimeStamp = DateTime.Now;
+                            objCurrentStock.UserId = 0;
+                            objCurrentStock.Version = "";
+                            objCurrentStock.IsDisp = "N";
+                            objCurrentStock.InvoiceNo = "";
+                            objCurrentStock.ProdType = "P";
+                            objCurrentStock.DispQty = 0;
+
+                            entitites.Im_CurrentStock.Add(objCurrentStock);
+                        }
+                        else
+                        {
+                            isStockAvailable = false;
+                            objResponse.Status = false;
+                            objResponse.ResponseMessage = "Stock Not Available.";
+                            break; 
+                        }
+                    }
+                    int i = 0;
+                    if (isStockAvailable)
+                    {
+                        i = await Task.Run(() => entitites.SaveChanges());
+
+                        if (i <= 0)
+                        {
+                            objResponse.Status = false;
+                            objResponse.ResponseMessage = "Something went wrong.";
+                        }
+                        else
+                        {
+                            objResponse.Status = true;
+                            objResponse.ResponseMessage = "Stock Updated Successfully.";
+                        }
+                    }               
+                }
+            }
+            catch (Exception ex)
+            {
+                objResponse.Status = false;
+                objResponse.ResponseMessage = ex.Message;
+            }
+            return objResponse;
+        }
+
+        public List<StockReport> getCurrentStock(string Stall)
+        {
+            List<StockReport> CurrentStock = new List<StockReport>();
+            try
+            {
+                DateTime startDate = DateTime.Now;
+                DateTime endDate = DateTime.Now;
+
+                using (var entity = new BKDHEntities())
+                {
+                    CurrentStock = (from r in entity.V_CurrentStockDetailNotForStockist
+                                    where (Stall != "0" && Stall != "All" ? r.PartyCode == Stall : 1 == 1)
+                                    orderby r.ProductName
+                                    select new StockReport
+                                    {
+                                        PartyCode = r.PartyCode,
+                                        PartyName = r.PartyName,
+                                        ProductCode = r.ProdId,
+                                        ProductName = r.ProductName,
+                                        Quantity = r.Qty ?? 0
+                                    }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return CurrentStock;
+        }
+
+        public async Task<Response> GetDateWiseStockReport(string PartyCode,string From,string To)
+        {
+            Response objResponse = new Response();            
+            objResponse.Status = false;
+
+            try
+            {
+
+                DateTime startDate = DateTime.Now.Date;
+                DateTime endDate = DateTime.Now.Date;
+
+                if (!string.IsNullOrEmpty(From))
+                {
+                    startDate = Convert.ToDateTime(DateTime.ParseExact(From, "dd-MM-yyyy", CultureInfo.InvariantCulture)).Date;                   
+                }
+
+                if (!string.IsNullOrEmpty(To))
+                {
+                    endDate = Convert.ToDateTime(DateTime.ParseExact(To, "dd-MM-yyyy", CultureInfo.InvariantCulture)).Date;
+                }
+
+                using (var entity = new BKDHEntities())
+                {
+                    var objStockModel = await Task.Run(() => (from r in entity.StockDetail(PartyCode,startDate, endDate)                                     
+                                     select r).ToList());
+                    objResponse.Status = true;
+                    objResponse.ResponseValue = await Task.Run(() => new JavaScriptSerializer().Serialize(objStockModel));
+                }
+            }
+            catch (Exception ex)
+            {
+                objResponse.Status = false;
+                objResponse.ResponseMessage = ex.Message;
+            }
+            return objResponse;
+        }
+
+        public async Task<Response> GetStockReport(string PartyCode)
+        {
+            Response objResponse = new Response();
+            StockReportModel objStockDetail = new StockReportModel();
+            objStockDetail.StockDetail = new List<StockReport>();
+            try
+            {                
+                using (var entity = new BKDHEntities())
+                {
+                    objStockDetail.StockDetail = await Task.Run(() => (from r in entity.V_CurrentStockDetailNotForStockist
+                                         where (PartyCode != "0" && PartyCode != "All" ? r.PartyCode == PartyCode : 1 == 1)
+                                         orderby r.ProductName
+                                         select new StockReport
+                                         {
+                                             PartyCode = r.PartyCode,
+                                             PartyName = r.PartyName,                                                                                                                                
+                                             ProductCode = r.ProdId,
+                                             ProductName = r.ProductName,                                            
+                                             Quantity = r.Qty??0                                           
+                                         }).ToList());
+
+                    var CurrentDate = DateTime.Now.Date;
+                    objStockDetail.IsStockUpdated = entity.Im_CurrentStock.Where(r => r.StockDate == CurrentDate && (r.SType == "O" || r.SType == "W") && r.FCode == PartyCode).Count() >0 ? "Y" : "N";
+
+                    objResponse.Status = true;
+                    objResponse.ResponseValue = await Task.Run(() => new JavaScriptSerializer().Serialize(objStockDetail));
+                }
+            }
+            catch (Exception ex)
+            {
+                objResponse.Status = false;
+                objResponse.ResponseMessage = ex.Message;
+            }
+            return objResponse;
+        }
 
 
 

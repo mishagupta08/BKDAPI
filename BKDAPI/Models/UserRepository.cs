@@ -30,7 +30,8 @@ namespace BKDAPI.Models
                         GroupId = us.GroupId,
                         GroupName = groups.GroupName,
                         ActiveStatus = us.ActiveStatus,
-                        BranchCode = us.BranchCode
+                        BranchCode = us.BranchCode,
+                        FCode = us.FCode
 
                     }).FirstOrDefault());
                     if (User != null)

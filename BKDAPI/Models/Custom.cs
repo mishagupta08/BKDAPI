@@ -84,6 +84,7 @@ namespace BKDAPI.Models
         public decimal UserId { get; set; }
         public string UserName { get; set; }
         public string Passw { get; set; }
+        public string FCode { get; set; }
         public string Name { get; set; }
         public string BranchCode { get; set; }
         public string GroupName { get; set; }
@@ -123,5 +124,54 @@ namespace BKDAPI.Models
         public string UserType { get; set; }
         public int OrderId { get; set; }
         public List<int> ProductId { get; set; }
+    }
+
+    public class StockFilter
+    {
+        public string StallCounter { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+    }
+
+    public class UsedStallProducts
+    {
+        public string Stall { get; set; }       
+        public List<ConsumedProducts> ProductList { get; set; }
+    }
+
+    public class ConsumedProducts
+    {
+        public int ProductCode { get; set; }
+        public string type { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public class StockReportModel
+    {
+        public string IsStockUpdated { get; set; }
+        public List<StockReport> StockDetail { get; set; }
+}
+
+    public class StockReport
+    {
+        public string PartyCode { get; set; }
+        public string PartyName { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }        
+    }
+
+    public class StockSummaryModel
+    {
+        public string PartyCode { get; set; }
+        public string PartyName { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal WasteStock { get; set; }
+        public decimal OpStock { get; set; }
+        public decimal InStock { get; set; }
+        public decimal StockOut { get; set; }
+        public decimal ClsStock { get; set; }        
     }
 }
